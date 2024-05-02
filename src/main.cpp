@@ -35,15 +35,15 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravity");
   window.setFramerateLimit(FPS);
   
-  GravitySource s1 = GravitySource(CENTER_W - 500, CENTER_H,3000);
+  GravitySource s1 = GravitySource(CENTER_W - 500, CENTER_H,9000);
   GravitySource s2 = GravitySource(CENTER_W + 500,CENTER_H,3000);
   GravitySource s3 = GravitySource(CENTER_W,160,3000);
   
 
   std::vector<GravitySource> sources;
   sources.push_back(s1);
-  sources.push_back(s2);
-  sources.push_back(s3);
+  //sources.push_back(s2);
+  //sources.push_back(s3);
 
   const int num_particle = 200;
   std::vector<Particle> particles;
