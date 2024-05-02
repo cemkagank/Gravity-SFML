@@ -1,3 +1,3 @@
 # Gravity
 
-![](./res/gif.webm)
+![](./res/output.gif)
