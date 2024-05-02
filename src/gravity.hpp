@@ -1,7 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Vertex.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
@@ -40,6 +43,10 @@ class Particle {
   sf::Vector2f pos;
   sf::Vector2f vel;
   sf::CircleShape s;
+  sf::VertexArray orbit;
+  static bool orbitHistory;
+  
+
 
   public:
     Particle(float pos_x, float pos_y, float vel_x , float vel_y) {
@@ -51,10 +58,16 @@ class Particle {
       s.setFillColor(sf::Color::Green);
       s.setRadius(5);
     }
+
+    static void toggle_orbit_history() {
+      orbitHistory = !orbitHistory;
+    }
   
     void render(sf::RenderWindow &window) {
       s.setPosition(pos);
       window.draw(s);
+      if (orbitHistory) window.draw(&orbit[0], orbit.getVertexCount() ,sf::LineStrip);
+      
     }
 
     sf::Vector2f get_pos() {
@@ -84,6 +97,8 @@ class Particle {
 
       pos.x += vel.x;
       pos.y += vel.y;
+
+      orbit.append(sf::Vertex(pos, sf::Color::White));
     }
     
     void set_color(sf::Color c) {
@@ -93,3 +108,4 @@ class Particle {
     
   private:
 };
+bool Particle::orbitHistory = false;
