@@ -6,14 +6,13 @@
 #include <cmath>
 #include <vector>
 
-
-
 #define WIDTH 1280
 #define HEIGHT 720
 #define FPS 120
 #define CENTER_W (float)WIDTH/2
 #define CENTER_H (float)HEIGHT/2
 
+bool Particle::orbitHistory = false;
 
 // TODO: add mouse event to add particle or power source 
 // NOTE: new system to detect and attach particles to power sources.

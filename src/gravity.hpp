@@ -108,4 +108,3 @@ class Particle {
     
   private:
 };
-bool Particle::orbitHistory = false;
