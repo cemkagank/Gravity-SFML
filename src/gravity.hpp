@@ -102,7 +102,17 @@ class Particle {
       pos.x += vel.x;
       pos.y += vel.y;
 
+      if (orbit.getVertexCount() > 500) {
+          sf::VertexArray temp;
+          for (int i = 10; i < orbit.getVertexCount() ; i++) {
+            temp.append(orbit[i-1]);
+          }
+          orbit = temp;
+          orbit.append(sf::Vertex(pos, sf::Color::White));
+      } else {
       orbit.append(sf::Vertex(pos, sf::Color::White));
+      }
+      
     }
     
     void set_color(sf::Color c) {
