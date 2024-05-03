@@ -36,20 +36,18 @@ sf::Color interpolate(float val){
 void populate(std::vector<Particle> &arr){
   int num_particle = 200;
   for (int i =0 ; i < num_particle; i++) {
-      arr.push_back(Particle(CENTER_W + 3,260,4, 0.2 + (0.1/ num_particle) * i ));
       float val = (float)i / (float)num_particle;
       sf::Color col = interpolate(val);
-      arr[i].set_color(col);
+      arr.push_back(Particle(CENTER_W + 3,260,4, 0.2 + (0.1/ num_particle) * i , col) );
 
     }
 }
 
 void add_particles(std::vector<Particle> &arr, float x , float y){
-  for (int i =0 ; i < 20; i++) {
-      arr.push_back(Particle( x ,y  ,4, 0.2 + (0.1/ 20) * i ));
-      float val = (float)i / (float)20;
+  for (int i =0 ; i < 200; i++) {
+      float val = (float)i  / (float)200;
       sf::Color col = interpolate(val);
-      arr[i].set_color(col);
+      arr.push_back(Particle( x ,y  ,4, 0.2 + (0.1/ 200) * i, col ));
 
     }
 }
@@ -106,6 +104,7 @@ int main() {
         } else if(event.mouseButton.button == sf::Mouse::Right){
           sf::Vector2i pos = sf::Mouse::getPosition(window);
           add_particles(particles, pos.x,pos.y);
+          
 
         }
       } else if (event.type == sf::Event::KeyPressed) {

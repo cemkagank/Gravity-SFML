@@ -19,7 +19,7 @@ class GravitySource {
       pos.y = pos_y;
       this->str = str;
       s.setPosition(pos);
-      s.setFillColor(sf::Color::White);
+      s.setFillColor(sf::Color::Magenta);
       s.setRadius(8);
     }
   
@@ -46,16 +46,18 @@ class Particle {
   sf::VertexArray orbit;
   static bool orbitHistory;
   static sf::PrimitiveType ltype;
+  sf::Color col;
 
   public:
-    Particle(float pos_x, float pos_y, float vel_x , float vel_y) {
+    Particle(float pos_x, float pos_y, float vel_x , float vel_y, sf::Color col) {
       pos.x = pos_x;
       pos.y = pos_y;
       vel.x = vel_x;
       vel.y = vel_y;
       s.setPosition(pos);
-      s.setFillColor(sf::Color::Green);
+      s.setFillColor(col);
       s.setRadius(5);
+      this->col = col;
     }
 
     static void toggle_orbit_history() {
@@ -70,7 +72,7 @@ class Particle {
     void render(sf::RenderWindow &window) {
       s.setPosition(pos);
       window.draw(s);
-      if (orbitHistory) window.draw(&orbit[0], orbit.getVertexCount() , ltype);
+      if (orbitHistory) window.draw(&orbit[0], orbit.getVertexCount() , ltype );
       
     }
 
@@ -108,14 +110,15 @@ class Particle {
             temp.append(orbit[i-1]);
           }
           orbit = temp;
-          orbit.append(sf::Vertex(pos, sf::Color::White));
+          orbit.append(sf::Vertex(pos, col));
       } else {
-      orbit.append(sf::Vertex(pos, sf::Color::White));
+      orbit.append(sf::Vertex(pos, col));
       }
       
     }
     
     void set_color(sf::Color c) {
+      col = c;
       s.setFillColor(c);
     }
   private:
