@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include "gravity.hpp"
+#include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <vector>
 
@@ -13,11 +15,9 @@
 #define CENTER_H (float)HEIGHT/2
 
 bool Particle::orbitHistory = false;
+sf::PrimitiveType Particle::ltype = sf::LinesStrip;
 
-// TODO: add mouse event to add particle or power source 
-// NOTE: new system to detect and attach particles to power sources.
 // TODO: add sliders to change str of power source
-
 
 sf::Color interpolate(float val){
   int r,g,b = 0;
@@ -32,33 +32,63 @@ sf::Color interpolate(float val){
   return sf::Color(r,g,b);
 }
 
+
+void populate(std::vector<Particle> &arr){
+  int num_particle = 200;
+  for (int i =0 ; i < num_particle; i++) {
+      arr.push_back(Particle(CENTER_W + 3,260,4, 0.2 + (0.1/ num_particle) * i ));
+      float val = (float)i / (float)num_particle;
+      sf::Color col = interpolate(val);
+      arr[i].set_color(col);
+
+    }
+}
+
+void add_particles(std::vector<Particle> &arr, float x , float y){
+  for (int i =0 ; i < 20; i++) {
+      arr.push_back(Particle( x ,y  ,4, 0.2 + (0.1/ 20) * i ));
+      float val = (float)i / (float)20;
+      sf::Color col = interpolate(val);
+      arr[i].set_color(col);
+
+    }
+}
+
+void reset(std::vector<Particle> &arr, std::vector<GravitySource> &gr) {
+  arr.clear();
+  gr.clear();
+}
+
+
 int main() {
+  // Font loading
+  sf::Font font;
+  font.loadFromFile("./res/font.ttf");
+
+  // Text
+  sf::Text text;
+  text.setFont(font);
+  text.setString("s - toggle orbit\nl - toggle orbit style\nr - clear all\nleft click - spawn source\nright click - spawn particles");
+  text.setFillColor(sf::Color::White);
+  text.setCharacterSize(16);
+
+  // Create window and set options
   sf::ContextSettings settings;
   settings.antialiasingLevel = 8;
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravity" , sf::Style::Default, settings);
   window.setFramerateLimit(FPS);
-  GravitySource s1 = GravitySource(CENTER_W - 500, CENTER_H,9000);
-  GravitySource s2 = GravitySource(CENTER_W + 500,CENTER_H,3000);
-  GravitySource s3 = GravitySource(CENTER_W,160,3000);
-  
+  window.setVerticalSyncEnabled(true);
 
+  // Gravity source creation
+  GravitySource s1 = GravitySource(CENTER_W - 500, CENTER_H,9000);
   std::vector<GravitySource> sources;
   sources.push_back(s1);
-  //sources.push_back(s2);
-  //sources.push_back(s3);
 
-  const int num_particle = 200;
+  // Particle creation
   std::vector<Particle> particles;
-
-
-  for (int i =0 ; i < num_particle; i++) {
-    particles.push_back(Particle(CENTER_W + 3,260,4, 0.2 + (0.1/ num_particle) * i ));
-    float val = (float)i / (float)num_particle;
-    sf::Color col = interpolate(val);
-    particles[i].set_color(col);
-
-  }
-
+  populate(particles);
+  
+  // Needed to display fps in title
   float fps = 0;
   sf::Clock clock;
   sf::Time prev = clock.getElapsedTime();
@@ -73,18 +103,27 @@ int main() {
         if (event.mouseButton.button == sf::Mouse::Left) {
           sf::Vector2i pos = sf::Mouse::getPosition(window);
           sources.push_back(GravitySource(pos.x, pos.y, 3000));
+        } else if(event.mouseButton.button == sf::Mouse::Right){
+          sf::Vector2i pos = sf::Mouse::getPosition(window);
+          add_particles(particles, pos.x,pos.y);
+
         }
       } else if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::S) {
           Particle::toggle_orbit_history();
+        } else if (event.key.code == sf::Keyboard::L) {
+          Particle::switch_ltype();
+        } else if (event.key.code == sf::Keyboard::R) {
+          reset(particles,sources);
         }
+          
       }
       
 
     }
 
     window.clear();
-
+    window.draw(text);
     for (int i=0 ; i < sources.size(); i++) {
       for (int j = 0; j < particles.size(); j++) {
         particles[j].update_pyhsics(sources[i]);

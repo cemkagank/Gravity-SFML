@@ -2,9 +2,12 @@
 
 ![](./res/output.gif)
 
-## Running
+## Building and Running
 
-requires sfml libraries
+requires sfml libraries for example for ubuntu:
+```
+sudo apt install libsfml-\*
+```
 
 ```
 git clone https://github.com/cemkagank/Gravity-SFML

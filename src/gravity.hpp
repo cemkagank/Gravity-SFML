@@ -45,8 +45,7 @@ class Particle {
   sf::CircleShape s;
   sf::VertexArray orbit;
   static bool orbitHistory;
-  
-
+  static sf::PrimitiveType ltype;
 
   public:
     Particle(float pos_x, float pos_y, float vel_x , float vel_y) {
@@ -62,11 +61,16 @@ class Particle {
     static void toggle_orbit_history() {
       orbitHistory = !orbitHistory;
     }
+    
+    static void switch_ltype(){
+      if (ltype == sf::PrimitiveType::Lines) ltype = sf::LineStrip;
+      else ltype = sf::Lines;
+    }
   
     void render(sf::RenderWindow &window) {
       s.setPosition(pos);
       window.draw(s);
-      if (orbitHistory) window.draw(&orbit[0], orbit.getVertexCount() ,sf::LineStrip);
+      if (orbitHistory) window.draw(&orbit[0], orbit.getVertexCount() , ltype);
       
     }
 
@@ -104,7 +108,5 @@ class Particle {
     void set_color(sf::Color c) {
       s.setFillColor(c);
     }
-
-    
   private:
 };
