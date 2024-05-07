@@ -77,7 +77,7 @@ class Particle {
     }
 
     sf::Vector2f get_pos() {
-      return pos;  
+      return pos; 
     }
 
     sf::Vector2f get_vel(){

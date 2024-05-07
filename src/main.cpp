@@ -116,7 +116,11 @@ int main() {
           reset(particles,sources);
         }
           
-      }
+      } else if (event.type == sf::Event::Resized) {
+        // update the view to the new size of the window
+        sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+        window.setView(sf::View(visibleArea));
+    }
       
 
     }
