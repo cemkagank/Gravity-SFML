@@ -17,7 +17,13 @@
 bool Particle::orbitHistory = false;
 sf::PrimitiveType Particle::ltype = sf::LinesStrip;
 
+// TODO: Game State, Source Controller , Particle Controller
 // TODO: add sliders to change str of power source
+// TODO: integrate imgui ?
+// TODO: Optimization gravitysource
+// TODO: FPS in Screen
+
+
 
 sf::Color interpolate(float val){
   int r,g,b = 0;
@@ -61,7 +67,7 @@ void reset(std::vector<Particle> &arr, std::vector<GravitySource> &gr) {
 int main() {
   // Font loading
   sf::Font font;
-  font.loadFromFile("./res/font.ttf");
+  font.loadFromFile("./res/fx.ttf");
 
   // Text
   sf::Text text;
@@ -76,6 +82,7 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravity" , sf::Style::Default, settings);
   window.setFramerateLimit(FPS);
   window.setVerticalSyncEnabled(true);
+
 
   // Gravity source creation
   GravitySource s1 = GravitySource(CENTER_W - 500, CENTER_H,9000);
